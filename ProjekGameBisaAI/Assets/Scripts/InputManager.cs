@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     private PlayerInput.OnfootActions onFoot;
     private PlayerMotor motor;
     private PlayerLook look;
+    private bool isJumpHeld;
 
     void Awake()
     {
@@ -17,6 +18,9 @@ public class InputManager : MonoBehaviour
         motor = GetComponent<PlayerMotor>();
         onFoot.Jump.performed += ctx => motor.Jump();
         look = GetComponent<PlayerLook>();
+
+        onFoot.Crouch.performed += ctx => motor.Crouch();
+        onFoot.Sprint.performed += ctx => motor.Sprint();
     }
 
     // Update is called once per frame
