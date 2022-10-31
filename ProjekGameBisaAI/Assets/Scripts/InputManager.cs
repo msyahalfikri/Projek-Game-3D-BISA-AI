@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     private PlayerInput playerInput;
-    private PlayerInput.OnfootActions onFoot;
+    public PlayerInput.OnfootActions onFoot;
     private PlayerMotor motor;
     private PlayerLook look;
     private bool isJumpHeld;
