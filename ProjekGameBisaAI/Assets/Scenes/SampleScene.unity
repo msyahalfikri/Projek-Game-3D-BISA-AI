@@ -1154,6 +1154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   promptMessage: Gunakan keypad
+  door: {fileID: 1110186396}
 --- !u!135 &843666986
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1514,8 +1515,9 @@ GameObject:
   - component: {fileID: 1110186399}
   - component: {fileID: 1110186398}
   - component: {fileID: 1110186397}
+  - component: {fileID: 1110186401}
   m_Layer: 0
-  m_Name: Cube (10)
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1591,14 +1593,34 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1110186396}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.0048225243, y: 0.005604024, z: 0.00008930772, w: 0.9999727}
   m_LocalPosition: {x: 0.5033, y: 1.6716, z: -1.71}
   m_LocalScale: {x: 6.5487976, y: 5.4427457, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.553, y: 0.642, z: 0.013}
+--- !u!95 &1110186401
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1110186396}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2d94f6860f7d90f44bfc7a1282df3914, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1624127804
 GameObject:
   m_ObjectHideFlags: 0
