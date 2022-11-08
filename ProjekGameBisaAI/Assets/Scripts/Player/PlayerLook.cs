@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerLook : MonoBehaviour
 {
     public Camera cam;
+    public GameObject weapon;
     private float xRotation = 0f;
     public float xSens = 30f;
     public float ySens = 30f;

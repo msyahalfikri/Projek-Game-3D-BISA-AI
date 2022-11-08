@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMotor : MonoBehaviour
 {
     private CharacterController controller;
+
+    private InputManager inputManager;
     private Vector3 playerVelocity;
     public float speed = 5f;
     private bool isGrounded;
@@ -14,6 +16,7 @@ public class PlayerMotor : MonoBehaviour
     public bool sprinting;
     public float crouchTimer = 0f;
     public bool lerpCrouch;
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,8 +44,6 @@ public class PlayerMotor : MonoBehaviour
             lerpCrouch = false;
             crouchTimer = 0f;
         }
-
-
     }
     //Menerima input dari inputmanager.cs
     public void processMove(Vector2 input)
@@ -57,7 +58,8 @@ public class PlayerMotor : MonoBehaviour
             playerVelocity.y = -2f;
         }
         controller.Move(playerVelocity * Time.deltaTime);
-        Debug.Log(playerVelocity.y);
+
+        //inputManager.weaponAnimationSpeed = controller.velocity.magnitude / ;
     }
     public void Jump()
     {
@@ -84,5 +86,13 @@ public class PlayerMotor : MonoBehaviour
         {
             speed = 3;
         }
+
+
+    }
+
+    public void StopSprint()
+    {
+        sprinting = false;
+        speed = 3;
     }
 }
