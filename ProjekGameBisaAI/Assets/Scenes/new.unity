@@ -4388,7 +4388,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 329642450}
-  weapon: {fileID: 0}
   xSens: 30
   ySens: 30
 --- !u!114 &571446350
@@ -4417,6 +4416,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec173d038966c6c4d82c2d47d305f0da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerVelocity: {x: 0, y: 0, z: 0}
   speed: 3
   gravity: -17
   jumpHeight: 1
@@ -5882,8 +5882,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -349.4, y: -251.5}
-  m_SizeDelta: {x: -757.6329, y: -565.8521}
+  m_AnchoredPosition: {x: -349.40002, y: -245.51454}
+  m_SizeDelta: {x: -757.6329, y: -572.7152}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &789547646
 MonoBehaviour:
@@ -9105,8 +9105,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -335.37653, y: -251.73767}
-  m_SizeDelta: {x: -788.3713, y: -582.5247}
+  m_AnchoredPosition: {x: -336.24908, y: -245.48584}
+  m_SizeDelta: {x: -787.1483, y: -587.4113}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1222934472
 MonoBehaviour:
@@ -13821,8 +13821,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -327.9961, y: -251.5}
-  m_SizeDelta: {x: -809.2408, y: -589.2332}
+  m_AnchoredPosition: {x: -328.9095, y: -245.66699}
+  m_SizeDelta: {x: -805.9203, y: -592.8063}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1971686978
 MonoBehaviour:
@@ -14393,8 +14393,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -328, y: -251.5}
-  m_SizeDelta: {x: -809.24, y: -589.2332}
+  m_AnchoredPosition: {x: -328.9134, y: -245.66699}
+  m_SizeDelta: {x: -805.9195, y: -592.8063}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2070836160
 MonoBehaviour:

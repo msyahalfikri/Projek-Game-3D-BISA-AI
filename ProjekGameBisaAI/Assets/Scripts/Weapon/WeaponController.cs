@@ -5,6 +5,8 @@ public class WeaponController : MonoBehaviour
 {
     private InputManager input;
 
+    private PlayerMotor motor;
+
     [Header("References")]
     public Animator weaponAnimator;
     [Header("Settings")]
@@ -28,6 +30,7 @@ public class WeaponController : MonoBehaviour
     private void Start()
     {
         newWeaponRotation = transform.localRotation.eulerAngles;
+        motor = GetComponentInParent<PlayerMotor>();
     }
     public void initialize(InputManager inputManager)
     {
@@ -40,6 +43,14 @@ public class WeaponController : MonoBehaviour
         {
             return;
         }
+        CalculateWeaponRotation();
+        SetWeaponAnimations();
+
+    }
+
+    private void CalculateWeaponRotation()
+    {
+        weaponAnimator.speed = input.weaponAnimationSpeed;
 
         Vector2 rotationValue = input.onFoot.Look.ReadValue<Vector2>();
         targetWeaponRotation.y += settings.swayAmount * (settings.swayXInverted ? -rotationValue.x : rotationValue.x) * Time.deltaTime;
@@ -60,5 +71,10 @@ public class WeaponController : MonoBehaviour
         newWeaponMovementRotation = Vector3.SmoothDamp(newWeaponMovementRotation, targetWeaponMovementRotation, ref newWeaponMovementRotationVelocity, settings.movementSwaySmoothing);
 
         transform.localRotation = Quaternion.Euler(newWeaponRotation + newWeaponMovementRotation);
+    }
+
+    private void SetWeaponAnimations()
+    {
+        weaponAnimator.SetBool("isSprinting", motor.sprinting);
     }
 }

@@ -6,8 +6,9 @@ public class PlayerMotor : MonoBehaviour
 {
     private CharacterController controller;
 
-    private InputManager inputManager;
-    private Vector3 playerVelocity;
+    private InputManager input;
+    [SerializeField]
+    public Vector3 playerVelocity;
     public float speed = 5f;
     private bool isGrounded;
     public float gravity = -9.8f;
@@ -22,6 +23,7 @@ public class PlayerMotor : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+        input = GetComponent<InputManager>();
     }
 
     // Update is called once per frame
@@ -44,6 +46,7 @@ public class PlayerMotor : MonoBehaviour
             lerpCrouch = false;
             crouchTimer = 0f;
         }
+
     }
     //Menerima input dari inputmanager.cs
     public void processMove(Vector2 input)
@@ -59,7 +62,7 @@ public class PlayerMotor : MonoBehaviour
         }
         controller.Move(playerVelocity * Time.deltaTime);
 
-        //inputManager.weaponAnimationSpeed = controller.velocity.magnitude / ;
+
     }
     public void Jump()
     {

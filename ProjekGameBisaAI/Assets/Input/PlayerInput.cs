@@ -29,11 +29,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Movement"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""73fc673f-8923-4f1c-bd3a-7d7ac8fbc88c"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold"",
                     ""initialStateCheck"": true
                 },
                 {
