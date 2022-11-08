@@ -5,6 +5,8 @@ public class WeaponController : MonoBehaviour
 {
     private InputManager input;
 
+    [Header("References")]
+    public Animator weaponAnimator;
     [Header("Settings")]
     public WeaponSettingsModel settings;
 
@@ -22,8 +24,6 @@ public class WeaponController : MonoBehaviour
 
     Vector3 targetWeaponMovementRotation;
     Vector3 targetWeaponMovementRotationVelocity;
-
-
 
     private void Start()
     {

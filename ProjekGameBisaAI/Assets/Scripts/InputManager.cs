@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
 
     [Header("Weapon")]
     public WeaponController currentWeapon;
+    public float weaponAnimationSpeed;
 
     void Awake()
     {
