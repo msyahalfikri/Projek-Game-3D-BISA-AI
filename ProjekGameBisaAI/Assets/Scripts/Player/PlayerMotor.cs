@@ -15,6 +15,7 @@ public class PlayerMotor : MonoBehaviour
     public float crouchTimer = 0f;
     public bool lerpCrouch;
 
+
     // Start is called before the first frame update
     void Start()
     {

@@ -11,6 +11,9 @@ public class InputManager : MonoBehaviour
     private PlayerLook look;
     private bool isJumpHeld;
 
+    [Header("Weapon")]
+    public WeaponController currentWeapon;
+
     void Awake()
     {
         playerInput = new PlayerInput();
@@ -22,6 +25,11 @@ public class InputManager : MonoBehaviour
         onFoot.Crouch.performed += ctx => motor.Crouch();
         onFoot.Sprint.performed += ctx => motor.Sprint();
         onFoot.SprintReleased.performed += ctx => motor.StopSprint();
+
+        if (currentWeapon)
+        {
+            currentWeapon.initialize(this);
+        }
     }
 
     // Update is called once per frame
