@@ -83,5 +83,13 @@ public class PlayerMotor : MonoBehaviour
         {
             speed = 3;
         }
+
+
+    }
+
+    public void StopSprint()
+    {
+        sprinting = false;
+        speed = 3;
     }
 }

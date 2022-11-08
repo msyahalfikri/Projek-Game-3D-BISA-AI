@@ -80,6 +80,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SprintReleased"",
+                    ""type"": ""Button"",
+                    ""id"": ""50654521-3799-4bf1-9788-1bf9145a0f22"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -300,6 +309,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a080c620-4e6d-4fd9-ab8f-a514d280f550"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SprintReleased"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dbb669d3-ce2a-4790-9dac-e0f353a048ee"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SprintReleased"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -832,6 +863,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Onfoot_Crouch = m_Onfoot.FindAction("Crouch", throwIfNotFound: true);
         m_Onfoot_Sprint = m_Onfoot.FindAction("Sprint", throwIfNotFound: true);
         m_Onfoot_Interact = m_Onfoot.FindAction("Interact", throwIfNotFound: true);
+        m_Onfoot_SprintReleased = m_Onfoot.FindAction("SprintReleased", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -909,6 +941,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Onfoot_Crouch;
     private readonly InputAction m_Onfoot_Sprint;
     private readonly InputAction m_Onfoot_Interact;
+    private readonly InputAction m_Onfoot_SprintReleased;
     public struct OnfootActions
     {
         private @PlayerInput m_Wrapper;
@@ -919,6 +952,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Crouch => m_Wrapper.m_Onfoot_Crouch;
         public InputAction @Sprint => m_Wrapper.m_Onfoot_Sprint;
         public InputAction @Interact => m_Wrapper.m_Onfoot_Interact;
+        public InputAction @SprintReleased => m_Wrapper.m_Onfoot_SprintReleased;
         public InputActionMap Get() { return m_Wrapper.m_Onfoot; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -946,6 +980,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_OnfootActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_OnfootActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_OnfootActionsCallbackInterface.OnInteract;
+                @SprintReleased.started -= m_Wrapper.m_OnfootActionsCallbackInterface.OnSprintReleased;
+                @SprintReleased.performed -= m_Wrapper.m_OnfootActionsCallbackInterface.OnSprintReleased;
+                @SprintReleased.canceled -= m_Wrapper.m_OnfootActionsCallbackInterface.OnSprintReleased;
             }
             m_Wrapper.m_OnfootActionsCallbackInterface = instance;
             if (instance != null)
@@ -968,6 +1005,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @SprintReleased.started += instance.OnSprintReleased;
+                @SprintReleased.performed += instance.OnSprintReleased;
+                @SprintReleased.canceled += instance.OnSprintReleased;
             }
         }
     }
@@ -1085,6 +1125,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnCrouch(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnSprintReleased(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
