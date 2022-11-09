@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
 {
     private PlayerInput playerInput;
     public PlayerInput.OnfootActions onFoot;
+    public PlayerInput.WeaponActions weaponActions;
     private PlayerMotor motor;
     private PlayerLook look;
     private bool isJumpHeld;
@@ -22,19 +23,26 @@ public class InputManager : MonoBehaviour
     {
         playerInput = new PlayerInput();
         onFoot = playerInput.Onfoot;
+        weaponActions = playerInput.Weapon;
+
         motor = GetComponent<PlayerMotor>();
+
         onFoot.Jump.performed += ctx => motor.Jump();
+
         look = GetComponent<PlayerLook>();
+
         controller = GetComponent<CharacterController>();
 
         onFoot.Crouch.performed += ctx => motor.Crouch();
         onFoot.Sprint.performed += ctx => motor.Sprint();
+        onFoot.SprintReleased.performed += ctx => motor.StopSprint();
 
         onFoot.Movement.started += ctx => WeaponMovementSway(true);
         onFoot.Movement.performed += ctx => WeaponMovementSway(true);
         onFoot.Movement.canceled += ctx => WeaponMovementSway(false);
 
-        onFoot.SprintReleased.performed += ctx => motor.StopSprint();
+        weaponActions.Fire2Pressed.performed += ctx => motor.AimingInPressed();
+        weaponActions.Fire2Released.performed += ctx => motor.AimingInReleased();
 
         if (currentWeapon)
         {
@@ -45,7 +53,15 @@ public class InputManager : MonoBehaviour
     {
         if (state)
         {
-            weaponAnimationSpeed = 1;
+            if (currentWeapon.isAimingIn)
+            {
+                weaponAnimationSpeed = 0.3f;
+            }
+            else
+            {
+                weaponAnimationSpeed = 1;
+            }
+
         }
         else
         {
@@ -66,10 +82,13 @@ public class InputManager : MonoBehaviour
     private void OnEnable()
     {
         onFoot.Enable();
+        weaponActions.Enable();
+
     }
 
     private void OnDisable()
     {
         onFoot.Disable();
+        weaponActions.Disable();
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static scr_model;
 
 public class PlayerMotor : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField]
     public Vector3 playerVelocity;
     public float speed = 5f;
-    private bool isGrounded;
     public float gravity = -9.8f;
     public float jumpHeight = 3f;
     public bool crouching;
@@ -18,6 +18,13 @@ public class PlayerMotor : MonoBehaviour
     public float crouchTimer = 0f;
     public bool lerpCrouch;
 
+    private bool isGrounded;
+
+    public LayerMask groundMask;
+
+    public PlayerSettingsModel playerSettings;
+
+    public bool isAimingIn;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +36,7 @@ public class PlayerMotor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         isGrounded = controller.isGrounded;
         crouchTimer += Time.deltaTime;
         float p = crouchTimer / 1;
@@ -46,6 +54,8 @@ public class PlayerMotor : MonoBehaviour
             lerpCrouch = false;
             crouchTimer = 0f;
         }
+        CalculateAimingIn();
+
 
     }
     //Menerima input dari inputmanager.cs
@@ -64,6 +74,17 @@ public class PlayerMotor : MonoBehaviour
 
 
     }
+
+    private void CalculateAimingIn()
+    {
+        if (!input.currentWeapon)
+        {
+            return;
+        }
+
+        input.currentWeapon.isAimingIn = isAimingIn;
+    }
+
     public void Jump()
     {
         if (isGrounded)
@@ -89,13 +110,19 @@ public class PlayerMotor : MonoBehaviour
         {
             speed = 3;
         }
-
-
     }
 
     public void StopSprint()
     {
         sprinting = false;
         speed = 3;
+    }
+    public void AimingInPressed()
+    {
+        isAimingIn = true;
+    }
+    public void AimingInReleased()
+    {
+        isAimingIn = false;
     }
 }

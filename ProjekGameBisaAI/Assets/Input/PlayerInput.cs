@@ -851,6 +851,76 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Weapon"",
+            ""id"": ""42ea90b7-09c2-4419-ae33-25e35d80dcb6"",
+            ""actions"": [
+                {
+                    ""name"": ""Fire2Pressed"",
+                    ""type"": ""Button"",
+                    ""id"": ""10f42029-3e13-4f38-8ada-53051669ef0d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Fire2Released"",
+                    ""type"": ""Button"",
+                    ""id"": ""585b6d79-2cd3-472b-915d-49ed65522b3e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""e7ca7dd3-1c0e-4af7-a70e-716f25bcb2ab"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire2Pressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""357721db-effc-4d96-bcdd-7d3c5228a64e"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire2Pressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0556e4ec-608a-46ac-a3a5-24ab54628df3"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire2Released"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4b5d9e8-a7e8-46e1-9208-e9ddfbc985bc"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire2Released"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -876,6 +946,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        // Weapon
+        m_Weapon = asset.FindActionMap("Weapon", throwIfNotFound: true);
+        m_Weapon_Fire2Pressed = m_Weapon.FindAction("Fire2Pressed", throwIfNotFound: true);
+        m_Weapon_Fire2Released = m_Weapon.FindAction("Fire2Released", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1117,6 +1191,47 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Weapon
+    private readonly InputActionMap m_Weapon;
+    private IWeaponActions m_WeaponActionsCallbackInterface;
+    private readonly InputAction m_Weapon_Fire2Pressed;
+    private readonly InputAction m_Weapon_Fire2Released;
+    public struct WeaponActions
+    {
+        private @PlayerInput m_Wrapper;
+        public WeaponActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Fire2Pressed => m_Wrapper.m_Weapon_Fire2Pressed;
+        public InputAction @Fire2Released => m_Wrapper.m_Weapon_Fire2Released;
+        public InputActionMap Get() { return m_Wrapper.m_Weapon; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(WeaponActions set) { return set.Get(); }
+        public void SetCallbacks(IWeaponActions instance)
+        {
+            if (m_Wrapper.m_WeaponActionsCallbackInterface != null)
+            {
+                @Fire2Pressed.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire2Pressed;
+                @Fire2Pressed.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire2Pressed;
+                @Fire2Pressed.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire2Pressed;
+                @Fire2Released.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire2Released;
+                @Fire2Released.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire2Released;
+                @Fire2Released.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire2Released;
+            }
+            m_Wrapper.m_WeaponActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Fire2Pressed.started += instance.OnFire2Pressed;
+                @Fire2Pressed.performed += instance.OnFire2Pressed;
+                @Fire2Pressed.canceled += instance.OnFire2Pressed;
+                @Fire2Released.started += instance.OnFire2Released;
+                @Fire2Released.performed += instance.OnFire2Released;
+                @Fire2Released.canceled += instance.OnFire2Released;
+            }
+        }
+    }
+    public WeaponActions @Weapon => new WeaponActions(this);
     public interface IOnfootActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -1139,5 +1254,10 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+    }
+    public interface IWeaponActions
+    {
+        void OnFire2Pressed(InputAction.CallbackContext context);
+        void OnFire2Released(InputAction.CallbackContext context);
     }
 }

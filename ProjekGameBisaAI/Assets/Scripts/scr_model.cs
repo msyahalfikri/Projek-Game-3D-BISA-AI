@@ -2,8 +2,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class scr_model : MonoBehaviour
+public static class scr_model
 {
+    #region  -Player-
+    [Serializable]
+    public class PlayerSettingsModel
+    {
+
+
+    }
+
+    #endregion
+
     #region -Weapons-
     [Serializable]
     public class WeaponSettingsModel
