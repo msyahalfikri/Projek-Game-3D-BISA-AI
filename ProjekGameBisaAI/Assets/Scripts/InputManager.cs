@@ -44,9 +44,27 @@ public class InputManager : MonoBehaviour
         weaponActions.Fire2Pressed.performed += ctx => motor.AimingInPressed();
         weaponActions.Fire2Released.performed += ctx => motor.AimingInReleased();
 
+        weaponActions.Fire1Pressed.performed += ctx => ShootingPressed();
+        weaponActions.Fire1Released.performed += ctx => ShootingReleased();
+
+
         if (currentWeapon)
         {
             currentWeapon.initialize(this);
+        }
+    }
+    private void ShootingPressed()
+    {
+        if (currentWeapon)
+        {
+            currentWeapon.isShooting = true;
+        }
+    }
+    private void ShootingReleased()
+    {
+        if (currentWeapon)
+        {
+            currentWeapon.isShooting = false;
         }
     }
     public void WeaponMovementSway(bool state)

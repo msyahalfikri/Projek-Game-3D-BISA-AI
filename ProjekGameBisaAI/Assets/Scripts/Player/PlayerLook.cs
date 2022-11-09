@@ -21,4 +21,9 @@ public class PlayerLook : MonoBehaviour
         //merotasi player untuk melihat ke kiri dan kekanan
         transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSens);
     }
+    private void Update()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 }

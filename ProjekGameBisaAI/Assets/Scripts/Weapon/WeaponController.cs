@@ -1,14 +1,21 @@
 using static scr_model;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class WeaponController : MonoBehaviour
 {
-    private InputManager input;
 
-    private PlayerMotor motor;
 
     [Header("References")]
     public Animator weaponAnimator;
+    public GameObject bulletPrefab;
+    public Transform bulletSpawn;
+    private InputManager input;
+    private PlayerMotor motor;
+
+    private PlayerInteract playerInteract;
+
     [Header("Settings")]
     public WeaponSettingsModel settings;
 
@@ -48,12 +55,22 @@ public class WeaponController : MonoBehaviour
     [HideInInspector]
     public bool isAimingIn;
 
-
+    [Header("Shooting")]
+    public float rateOfFire;
+    private float currentFireRate;
+    public List<weaponFireType> allowedFireTypes;
+    public weaponFireType currentFireType;
+    [HideInInspector]
+    public bool isShooting;
+    public float damage = 10f;
+    public float range = 100f;
+    public ParticleSystem muzzleFlash;
     private void Start()
     {
         newWeaponRotation = transform.localRotation.eulerAngles;
         motor = GetComponentInParent<PlayerMotor>();
         look = GetComponentInParent<PlayerLook>();
+        currentFireType = allowedFireTypes.First();
     }
     public void initialize(InputManager inputManager)
     {
@@ -70,20 +87,25 @@ public class WeaponController : MonoBehaviour
         SetWeaponAnimations();
         CalculateAimingIn();
         CalculateWeaponSway();
+        CalculateShooting();
 
     }
     private void CalculateAimingIn()
     {
         var targetPosition = transform.position;
 
-        if (isAimingIn)
+        if (!motor.sprinting)
         {
-            targetPosition = look.cam.transform.position + (WeaponSwayObject.transform.position - sightTarget.position) + (look.cam.transform.forward * sightOffset);
+            if (isAimingIn)
+            {
+                targetPosition = look.cam.transform.position + (WeaponSwayObject.transform.position - sightTarget.position) + (look.cam.transform.forward * sightOffset);
+            }
+
+            weaponSwayPosition = WeaponSwayObject.transform.position;
+            weaponSwayPosition = Vector3.SmoothDamp(weaponSwayPosition, targetPosition, ref weaponSwayVelocity, aimingInTime);
+            WeaponSwayObject.transform.position = weaponSwayPosition + swayPosition;
         }
 
-        weaponSwayPosition = WeaponSwayObject.transform.position;
-        weaponSwayPosition = Vector3.SmoothDamp(weaponSwayPosition, targetPosition, ref weaponSwayVelocity, aimingInTime);
-        WeaponSwayObject.transform.position = weaponSwayPosition + swayPosition;
 
     }
     private void CalculateWeaponRotation()
@@ -131,6 +153,37 @@ public class WeaponController : MonoBehaviour
     private Vector3 LissajousCurve(float Time, float A, float B)
     {
         return new Vector3(Mathf.Sin(Time), A * Mathf.Sin(B * Time + Mathf.PI));
+    }
+
+    private void Shoot()
+    {
+        var bullet = Instantiate(bulletPrefab, bulletSpawn);
+        muzzleFlash.Play();
+
+        Ray ray = new Ray(look.cam.transform.position, look.cam.transform.forward);
+        RaycastHit hitInfo;
+        if (Physics.Raycast(ray, out hitInfo, range))
+        {
+            Debug.Log(hitInfo.transform.name);
+            Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage);
+            }
+        }
+    }
+
+    private void CalculateShooting()
+    {
+        if (isShooting)
+        {
+            Shoot();
+
+            if (currentFireType == weaponFireType.semiAuto)
+            {
+                isShooting = false;
+            }
+        }
     }
 
 }

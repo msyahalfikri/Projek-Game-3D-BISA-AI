@@ -100,16 +100,20 @@ public class PlayerMotor : MonoBehaviour
     }
     public void Sprint()
     {
-        sprinting = !sprinting;
+        if (!isAimingIn)
+        {
+            sprinting = !sprinting;
 
-        if (sprinting)
-        {
-            speed = 8;
+            if (sprinting)
+            {
+                speed = 8;
+            }
+            else
+            {
+                speed = 3;
+            }
         }
-        else
-        {
-            speed = 3;
-        }
+
     }
 
     public void StopSprint()
