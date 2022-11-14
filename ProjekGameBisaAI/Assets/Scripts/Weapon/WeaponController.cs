@@ -2,6 +2,7 @@ using static scr_model;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 
 public class WeaponController : MonoBehaviour
 {
@@ -65,8 +66,16 @@ public class WeaponController : MonoBehaviour
     public float damage = 10f;
     public float range = 100f;
     public ParticleSystem muzzleFlash;
+
+    public float fullMag = 30f;
+    public float ammoInMag = 30;
+    public float totalAmmo = 100;
+
+    public TextMeshProUGUI ammoInMagText;
+    public TextMeshProUGUI ammoTotalText;
     private void Start()
     {
+        updateWeaponUI();
         newWeaponRotation = transform.localRotation.eulerAngles;
         motor = GetComponentInParent<PlayerMotor>();
         look = GetComponentInParent<PlayerLook>();
@@ -79,6 +88,10 @@ public class WeaponController : MonoBehaviour
     }
     private void Update()
     {
+        if (ammoInMag == 0)
+        {
+            ReloadWeapon();
+        }
         if (!isInitialized)
         {
             return;
@@ -110,7 +123,7 @@ public class WeaponController : MonoBehaviour
     }
     private void CalculateWeaponRotation()
     {
-        weaponAnimator.speed = input.weaponAnimationSpeed;
+        weaponAnimator.speed = 1.5f;
 
         Vector2 rotationValue = input.onFoot.Look.ReadValue<Vector2>();
         targetWeaponRotation.y += (isAimingIn ? settings.swayAmount / 2 : settings.swayAmount) * (settings.swayXInverted ? -rotationValue.x : rotationValue.x) * Time.deltaTime;
@@ -159,6 +172,8 @@ public class WeaponController : MonoBehaviour
     {
         var bullet = Instantiate(bulletPrefab, bulletSpawn);
         muzzleFlash.Play();
+        ammoInMag -= 1;
+        updateWeaponUI();
 
         Ray ray = new Ray(look.cam.transform.position, look.cam.transform.forward);
         RaycastHit hitInfo;
@@ -177,17 +192,60 @@ public class WeaponController : MonoBehaviour
     {
         if (!motor.sprinting)
         {
-            if (isShooting)
+            if (ammoInMag != 0)
             {
-                weaponAnimator.SetTrigger("isShooting");
-                Shoot();
-
-                if (currentFireType == weaponFireType.semiAuto)
+                if (isShooting)
                 {
-                    isShooting = false;
+                    weaponAnimator.SetTrigger("isShooting");
+                    Shoot();
+
+                    if (currentFireType == weaponFireType.semiAuto)
+                    {
+                        isShooting = false;
+                    }
                 }
             }
+
         }
+
+    }
+
+    private void updateWeaponUI()
+    {
+        ammoInMagText.text = ammoInMag.ToString();
+        ammoTotalText.text = totalAmmo.ToString();
+    }
+
+    public void ReloadWeapon()
+    {
+        if (!(ammoInMag == fullMag))
+        {
+            if (totalAmmo >= fullMag)
+            {
+                float reloadedAmmoMore = fullMag - ammoInMag;
+                ammoInMag += reloadedAmmoMore;
+                totalAmmo -= reloadedAmmoMore;
+            }
+            else if (totalAmmo < fullMag)
+            {
+                float reloadedAmmoLess = fullMag - ammoInMag;
+
+                if (totalAmmo >= reloadedAmmoLess)
+                {
+                    ammoInMag += reloadedAmmoLess;
+                    totalAmmo -= reloadedAmmoLess;
+                }
+                else
+                {
+                    ammoInMag += totalAmmo;
+                    totalAmmo -= totalAmmo;
+                }
+
+            }
+            updateWeaponUI();
+            weaponAnimator.SetTrigger("isReloading");
+        }
+
 
     }
 

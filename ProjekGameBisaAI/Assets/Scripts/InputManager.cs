@@ -46,6 +46,7 @@ public class InputManager : MonoBehaviour
 
         weaponActions.Fire1Pressed.performed += ctx => ShootingPressed();
         weaponActions.Fire1Released.performed += ctx => ShootingReleased();
+        weaponActions.Reload.performed += ctx => currentWeapon.ReloadWeapon();
 
 
         if (currentWeapon)
@@ -71,14 +72,6 @@ public class InputManager : MonoBehaviour
     {
         if (state)
         {
-            if (currentWeapon.isAimingIn)
-            {
-                weaponAnimationSpeed = 0.25f;
-            }
-            else
-            {
-                weaponAnimationSpeed = 1;
-            }
             currentWeapon.weaponAnimator.SetBool("isWalking", state);
             currentWeapon.weaponAnimator.SetBool("isIdle", false);
 

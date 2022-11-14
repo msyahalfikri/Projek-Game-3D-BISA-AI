@@ -891,6 +891,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""e87a117c-a85f-48b0-8e7e-6354b9ae33ee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -959,6 +968,28 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Fire1Released"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d944bd5b-0c47-45db-9652-953588770ede"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b98f71ae-ba15-440f-8dae-c87219d9fa71"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -992,6 +1023,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Weapon_Fire2Released = m_Weapon.FindAction("Fire2Released", throwIfNotFound: true);
         m_Weapon_Fire1Pressed = m_Weapon.FindAction("Fire1Pressed", throwIfNotFound: true);
         m_Weapon_Fire1Released = m_Weapon.FindAction("Fire1Released", throwIfNotFound: true);
+        m_Weapon_Reload = m_Weapon.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1241,6 +1273,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_Weapon_Fire2Released;
     private readonly InputAction m_Weapon_Fire1Pressed;
     private readonly InputAction m_Weapon_Fire1Released;
+    private readonly InputAction m_Weapon_Reload;
     public struct WeaponActions
     {
         private @PlayerInput m_Wrapper;
@@ -1249,6 +1282,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Fire2Released => m_Wrapper.m_Weapon_Fire2Released;
         public InputAction @Fire1Pressed => m_Wrapper.m_Weapon_Fire1Pressed;
         public InputAction @Fire1Released => m_Wrapper.m_Weapon_Fire1Released;
+        public InputAction @Reload => m_Wrapper.m_Weapon_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Weapon; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1270,6 +1304,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Fire1Released.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire1Released;
                 @Fire1Released.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire1Released;
                 @Fire1Released.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnFire1Released;
+                @Reload.started -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_WeaponActionsCallbackInterface.OnReload;
             }
             m_Wrapper.m_WeaponActionsCallbackInterface = instance;
             if (instance != null)
@@ -1286,6 +1323,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Fire1Released.started += instance.OnFire1Released;
                 @Fire1Released.performed += instance.OnFire1Released;
                 @Fire1Released.canceled += instance.OnFire1Released;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
             }
         }
     }
@@ -1319,5 +1359,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnFire2Released(InputAction.CallbackContext context);
         void OnFire1Pressed(InputAction.CallbackContext context);
         void OnFire1Released(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }
