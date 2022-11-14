@@ -73,18 +73,38 @@ public class InputManager : MonoBehaviour
         {
             if (currentWeapon.isAimingIn)
             {
-                weaponAnimationSpeed = 0.3f;
+                weaponAnimationSpeed = 0.25f;
             }
             else
             {
                 weaponAnimationSpeed = 1;
             }
+            currentWeapon.weaponAnimator.SetBool("isWalking", state);
+            currentWeapon.weaponAnimator.SetBool("isIdle", false);
 
         }
         else
         {
-            weaponAnimationSpeed = 0;
+            currentWeapon.weaponAnimator.SetBool("isWalking", state);
+            currentWeapon.weaponAnimator.SetBool("isIdle", true);
         }
+
+        // if (state)
+        // {
+        //     if (currentWeapon.isAimingIn)
+        //     {
+        //         weaponAnimationSpeed = 0.3f;
+        //     }
+        //     else
+        //     {
+        //         weaponAnimationSpeed = 1;
+        //     }
+
+        // }
+        // else
+        // {
+        //     weaponAnimationSpeed = 0;
+        // }
 
     }
     // Update is called once per frame

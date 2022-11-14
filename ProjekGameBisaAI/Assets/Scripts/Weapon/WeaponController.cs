@@ -175,15 +175,20 @@ public class WeaponController : MonoBehaviour
 
     private void CalculateShooting()
     {
-        if (isShooting)
+        if (!motor.sprinting)
         {
-            Shoot();
-
-            if (currentFireType == weaponFireType.semiAuto)
+            if (isShooting)
             {
-                isShooting = false;
+                weaponAnimator.SetTrigger("isShooting");
+                Shoot();
+
+                if (currentFireType == weaponFireType.semiAuto)
+                {
+                    isShooting = false;
+                }
             }
         }
+
     }
 
 }

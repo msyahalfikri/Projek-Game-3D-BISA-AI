@@ -110,7 +110,7 @@ public class PlayerMotor : MonoBehaviour
             }
             else
             {
-                speed = 3;
+                speed = 3.5f;
             }
         }
 
@@ -119,7 +119,7 @@ public class PlayerMotor : MonoBehaviour
     public void StopSprint()
     {
         sprinting = false;
-        speed = 3;
+        speed = 3.5f;
     }
     public void AimingInPressed()
     {
