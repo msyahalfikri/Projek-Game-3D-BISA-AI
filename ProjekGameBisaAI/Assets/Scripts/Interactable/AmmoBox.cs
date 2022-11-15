@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Keypad : Interactable
+public class AmmoBox : Interactable
 {
+    public float ammoInBox = 100;
+    private WeaponController weaponController;
     // Start is called before the first frame update
-    [SerializeField] private GameObject door;
-    private bool doorOpen;
     void Start()
     {
-
+        weaponController = GetComponent<WeaponController>();
     }
 
     // Update is called once per frame
     void Update()
     {
+
     }
 
     protected override void Interact()
     {
-        doorOpen = !doorOpen;
-        door.GetComponent<Animator>().SetBool("isOpen", doorOpen);
+        weaponController.totalAmmo += ammoInBox;
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using System.Collections;
 
 public class WeaponController : MonoBehaviour
 {
@@ -67,9 +68,13 @@ public class WeaponController : MonoBehaviour
     public float range = 100f;
     public ParticleSystem muzzleFlash;
 
+    public bool isReloading = false;
+    public float reloadTime = 2f;
     public float fullMag = 30f;
     public float ammoInMag = 30;
     public float totalAmmo = 100;
+    public float fullTotalAmmo = 100;
+    public AmmoBox ammoBox;
 
     public TextMeshProUGUI ammoInMagText;
     public TextMeshProUGUI ammoTotalText;
@@ -88,10 +93,16 @@ public class WeaponController : MonoBehaviour
     }
     private void Update()
     {
-        if (ammoInMag == 0)
+        if (isReloading)
         {
-            ReloadWeapon();
+            return;
         }
+        if (ammoInMag <= 0)
+        {
+            StartCoroutine(ReloadWeapon());
+            return;
+        }
+
         if (!isInitialized)
         {
             return;
@@ -123,7 +134,7 @@ public class WeaponController : MonoBehaviour
     }
     private void CalculateWeaponRotation()
     {
-        weaponAnimator.speed = 1.5f;
+        weaponAnimator.speed = 1f;
 
         Vector2 rotationValue = input.onFoot.Look.ReadValue<Vector2>();
         targetWeaponRotation.y += (isAimingIn ? settings.swayAmount / 2 : settings.swayAmount) * (settings.swayXInverted ? -rotationValue.x : rotationValue.x) * Time.deltaTime;
@@ -172,7 +183,7 @@ public class WeaponController : MonoBehaviour
     {
         var bullet = Instantiate(bulletPrefab, bulletSpawn);
         muzzleFlash.Play();
-        ammoInMag -= 1;
+        ammoInMag--;
         updateWeaponUI();
 
         Ray ray = new Ray(look.cam.transform.position, look.cam.transform.forward);
@@ -190,6 +201,10 @@ public class WeaponController : MonoBehaviour
 
     private void CalculateShooting()
     {
+        if (isReloading)
+        {
+            return;
+        }
         if (!motor.sprinting)
         {
             if (ammoInMag != 0)
@@ -208,6 +223,8 @@ public class WeaponController : MonoBehaviour
 
         }
 
+
+
     }
 
     private void updateWeaponUI()
@@ -216,37 +233,50 @@ public class WeaponController : MonoBehaviour
         ammoTotalText.text = totalAmmo.ToString();
     }
 
-    public void ReloadWeapon()
+    public IEnumerator ReloadWeapon()
     {
-        if (!(ammoInMag == fullMag))
+        if (!isReloading)
         {
-            if (totalAmmo >= fullMag)
+            if (!(ammoInMag == fullMag) && !motor.sprinting)
             {
-                float reloadedAmmoMore = fullMag - ammoInMag;
-                ammoInMag += reloadedAmmoMore;
-                totalAmmo -= reloadedAmmoMore;
-            }
-            else if (totalAmmo < fullMag)
-            {
-                float reloadedAmmoLess = fullMag - ammoInMag;
-
-                if (totalAmmo >= reloadedAmmoLess)
+                isReloading = true;
+                weaponAnimator.SetTrigger("isReloading");
+                yield return new WaitForSeconds(reloadTime);
+                if (totalAmmo >= fullMag)
                 {
-                    ammoInMag += reloadedAmmoLess;
-                    totalAmmo -= reloadedAmmoLess;
+                    float reloadedAmmoMore = fullMag - ammoInMag;
+                    ammoInMag += reloadedAmmoMore;
+                    totalAmmo -= reloadedAmmoMore;
                 }
-                else
+                else if (totalAmmo < fullMag)
                 {
-                    ammoInMag += totalAmmo;
-                    totalAmmo -= totalAmmo;
+                    float reloadedAmmoLess = fullMag - ammoInMag;
+
+                    if (totalAmmo >= reloadedAmmoLess)
+                    {
+                        ammoInMag += reloadedAmmoLess;
+                        totalAmmo -= reloadedAmmoLess;
+                    }
+                    else
+                    {
+                        ammoInMag += totalAmmo;
+                        totalAmmo -= totalAmmo;
+                    }
+
                 }
+                updateWeaponUI();
+                isReloading = false;
 
             }
-            updateWeaponUI();
-            weaponAnimator.SetTrigger("isReloading");
         }
 
 
+    }
+
+    public void RefillAmmo()
+    {
+        totalAmmo = fullTotalAmmo;
+        updateWeaponUI();
     }
 
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class InputManager : MonoBehaviour
 {
     private PlayerInput playerInput;
@@ -46,7 +47,7 @@ public class InputManager : MonoBehaviour
 
         weaponActions.Fire1Pressed.performed += ctx => ShootingPressed();
         weaponActions.Fire1Released.performed += ctx => ShootingReleased();
-        weaponActions.Reload.performed += ctx => currentWeapon.ReloadWeapon();
+        weaponActions.Reload.performed += ctx => StartCoroutine(currentWeapon.ReloadWeapon());
 
 
         if (currentWeapon)
