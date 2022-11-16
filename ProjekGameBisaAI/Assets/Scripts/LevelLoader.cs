@@ -19,10 +19,5 @@ public class LevelLoader : MonoBehaviour
     {
         StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex + 1));
     }
-
     // Update is called once per frame
-    void Update()
-    {
-        LoadLevel();
-    }
 }

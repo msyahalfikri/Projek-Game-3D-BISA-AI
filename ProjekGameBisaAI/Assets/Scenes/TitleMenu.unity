@@ -576,9 +576,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7048146185557052367, guid: 617398b14a2f5f244bbc65f032ed6b38, type: 3}
+      - m_Target: {fileID: 1936842800}
         m_TargetAssemblyTypeName: TitleMenu, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: PlayGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -796,6 +796,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254281861}
   m_CullTransparentMesh: 1
+--- !u!95 &1339755022 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3305857630244355698, guid: 617398b14a2f5f244bbc65f032ed6b38, type: 3}
+  m_PrefabInstance: {fileID: 1842903759}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1358103744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,17 +1215,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6932932299365597067, guid: 617398b14a2f5f244bbc65f032ed6b38, type: 3}
+      propertyPath: transition
+      value: 
+      objectReference: {fileID: 1339755022}
+    - target: {fileID: 6932932299365597067, guid: 617398b14a2f5f244bbc65f032ed6b38, type: 3}
+      propertyPath: transitionTime
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7048146185557052367, guid: 617398b14a2f5f244bbc65f032ed6b38, type: 3}
       propertyPath: m_Name
       value: LevelLoader
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 617398b14a2f5f244bbc65f032ed6b38, type: 3}
---- !u!1 &1842903760 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7048146185557052367, guid: 617398b14a2f5f244bbc65f032ed6b38, type: 3}
-  m_PrefabInstance: {fileID: 1842903759}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1936842795
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,7 +1350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0b2437779ebdee4ebe55de77e7bb73d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelLoader: {fileID: 1842903760}
+  transition: {fileID: 1339755022}
+  transitionTime: 2
 --- !u!114 &1936842801
 MonoBehaviour:
   m_ObjectHideFlags: 0

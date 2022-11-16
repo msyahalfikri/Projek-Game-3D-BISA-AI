@@ -69,7 +69,7 @@ public class WeaponController : MonoBehaviour
     public ParticleSystem muzzleFlash;
 
     public bool isReloading = false;
-    public float reloadTime = 2f;
+    public float reloadTime = 3f;
     public float fullMag = 30f;
     public float ammoInMag = 30;
     public float totalAmmo = 100;
@@ -190,7 +190,6 @@ public class WeaponController : MonoBehaviour
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo, range))
         {
-            Debug.Log(hitInfo.transform.name);
             Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
@@ -237,35 +236,42 @@ public class WeaponController : MonoBehaviour
     {
         if (!isReloading)
         {
-            if (!(ammoInMag == fullMag) && !motor.sprinting)
+            if (ammoInMag < fullMag)
             {
-                isReloading = true;
-                weaponAnimator.SetTrigger("isReloading");
-                yield return new WaitForSeconds(reloadTime);
-                if (totalAmmo >= fullMag)
+                if (!motor.sprinting)
                 {
-                    float reloadedAmmoMore = fullMag - ammoInMag;
-                    ammoInMag += reloadedAmmoMore;
-                    totalAmmo -= reloadedAmmoMore;
-                }
-                else if (totalAmmo < fullMag)
-                {
-                    float reloadedAmmoLess = fullMag - ammoInMag;
-
-                    if (totalAmmo >= reloadedAmmoLess)
+                    if (totalAmmo != 0)
                     {
-                        ammoInMag += reloadedAmmoLess;
-                        totalAmmo -= reloadedAmmoLess;
-                    }
-                    else
-                    {
-                        ammoInMag += totalAmmo;
-                        totalAmmo -= totalAmmo;
-                    }
+                        isReloading = true;
+                        weaponAnimator.SetTrigger("isReloading");
+                        yield return new WaitForSeconds(reloadTime);
+                        if (totalAmmo >= fullMag)
+                        {
+                            float reloadedAmmoMore = fullMag - ammoInMag;
+                            ammoInMag += reloadedAmmoMore;
+                            totalAmmo -= reloadedAmmoMore;
+                        }
+                        else if (totalAmmo < fullMag)
+                        {
+                            float reloadedAmmoLess = fullMag - ammoInMag;
 
+                            if (totalAmmo >= reloadedAmmoLess)
+                            {
+                                ammoInMag += reloadedAmmoLess;
+                                totalAmmo -= reloadedAmmoLess;
+                            }
+                            else
+                            {
+                                ammoInMag += totalAmmo;
+                                totalAmmo -= totalAmmo;
+                            }
+
+                        }
+                        updateWeaponUI();
+                        isReloading = false;
+
+                    }
                 }
-                updateWeaponUI();
-                isReloading = false;
 
             }
         }

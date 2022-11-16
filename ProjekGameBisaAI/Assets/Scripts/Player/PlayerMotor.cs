@@ -71,8 +71,6 @@ public class PlayerMotor : MonoBehaviour
             playerVelocity.y = -2f;
         }
         controller.Move(playerVelocity * Time.deltaTime);
-
-
     }
 
     private void CalculateAimingIn()
