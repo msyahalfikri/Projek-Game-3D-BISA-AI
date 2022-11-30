@@ -13,6 +13,9 @@ public class InputManager : MonoBehaviour
     private PlayerLook look;
     private bool isJumpHeld;
     private CharacterController controller;
+    public GameObject[] weaponHolder;
+
+    public bool isSprinting;
 
 
 
@@ -20,20 +23,21 @@ public class InputManager : MonoBehaviour
     public WeaponController currentWeapon;
     public float weaponAnimationSpeed;
 
+    public int weaponIndex = 0;
+
     void Awake()
     {
+        WeaponMovementSway(false);
+
         playerInput = new PlayerInput();
         onFoot = playerInput.Onfoot;
         weaponActions = playerInput.Weapon;
 
         motor = GetComponent<PlayerMotor>();
 
-        onFoot.Jump.performed += ctx => motor.Jump();
-
         look = GetComponent<PlayerLook>();
 
         controller = GetComponent<CharacterController>();
-
         onFoot.Crouch.performed += ctx => motor.Crouch();
         onFoot.Sprint.performed += ctx => motor.Sprint();
         onFoot.SprintReleased.performed += ctx => motor.StopSprint();
@@ -49,6 +53,9 @@ public class InputManager : MonoBehaviour
         weaponActions.Fire1Released.performed += ctx => ShootingReleased();
         weaponActions.Reload.performed += ctx => StartCoroutine(currentWeapon.ReloadWeapon());
 
+        weaponActions.SwitchWeaponPrevious.performed += ctx => SwitchWeapon(0);
+        weaponActions.SwitchWeaponNext.performed += ctx => SwitchWeapon(1);
+        onFoot.Jump.performed += ctx => motor.Jump();
 
         if (currentWeapon)
         {
@@ -83,29 +90,61 @@ public class InputManager : MonoBehaviour
             currentWeapon.weaponAnimator.SetBool("isIdle", true);
         }
 
-        // if (state)
-        // {
-        //     if (currentWeapon.isAimingIn)
-        //     {
-        //         weaponAnimationSpeed = 0.3f;
-        //     }
-        //     else
-        //     {
-        //         weaponAnimationSpeed = 1;
-        //     }
-
-        // }
-        // else
-        // {
-        //     weaponAnimationSpeed = 0;
-        // }
-
     }
     // Update is called once per frame
+    private void Update()
+    {
+        isSprinting = motor.sprinting;
+        if (currentWeapon)
+        {
+            currentWeapon.initialize(this);
+        }
+    }
     void FixedUpdate()
     {
         //Menyuruh playermotor untuk bergerak menggunakan nilai dari movement action
         motor.processMove(onFoot.Movement.ReadValue<Vector2>());
+
+    }
+
+    public void SwitchWeapon(int index)
+    {
+        if (!currentWeapon.isReloading)
+        {
+            if (!currentWeapon.isAimingIn)
+            {
+                if (!currentWeapon.isShooting)
+                {
+                    if (!isSprinting)
+                    {
+                        currentWeapon = weaponHolder[index].GetComponent<WeaponController>();
+
+
+                        if (index == 0)
+                        {
+                            weaponHolder[0].gameObject.SetActive(true);
+                            weaponHolder[1].gameObject.SetActive(false);
+                            weaponIndex = 0;
+                        }
+                        else if (index == 1)
+                        {
+                            weaponHolder[1].gameObject.SetActive(true);
+                            weaponHolder[0].gameObject.SetActive(false);
+                            weaponIndex = 1;
+                        }
+                        currentWeapon.updateWeaponUI();
+
+                    }
+
+
+                }
+            }
+        }
+
+
+
+
+
     }
     private void LateUpdate()
     {

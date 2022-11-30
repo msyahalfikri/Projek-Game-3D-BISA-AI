@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using System.Collections;
+using UnityEngine.UI;
 
 public class WeaponController : MonoBehaviour
 {
@@ -58,10 +59,11 @@ public class WeaponController : MonoBehaviour
     public bool isAimingIn;
 
     [Header("Shooting")]
-    public float rateOfFire;
+    public float rateOfFire = 15f;
     private float currentFireRate;
     public List<weaponFireType> allowedFireTypes;
     public weaponFireType currentFireType;
+    private float nextTimetoFire = 0f;
     [HideInInspector]
     public bool isShooting;
     public float damage = 10f;
@@ -74,10 +76,14 @@ public class WeaponController : MonoBehaviour
     public float ammoInMag = 30;
     public float totalAmmo = 100;
     public float fullTotalAmmo = 100;
-    public AmmoBox ammoBox;
+    int weaponIndex = 0;
 
     public TextMeshProUGUI ammoInMagText;
     public TextMeshProUGUI ammoTotalText;
+    public TextMeshProUGUI weaponNameText;
+
+    public Image weaponSilhouette;
+    public List<Sprite> imageObjs;
     private void Start()
     {
         updateWeaponUI();
@@ -112,6 +118,7 @@ public class WeaponController : MonoBehaviour
         CalculateAimingIn();
         CalculateWeaponSway();
         CalculateShooting();
+        weaponIndex = input.weaponIndex;
 
     }
     private void CalculateAimingIn()
@@ -123,6 +130,11 @@ public class WeaponController : MonoBehaviour
             if (isAimingIn)
             {
                 targetPosition = look.cam.transform.position + (WeaponSwayObject.transform.position - sightTarget.position) + (look.cam.transform.forward * sightOffset);
+                motor.speed = 2.5f;
+            }
+            else
+            {
+                motor.speed = 5f;
             }
 
             weaponSwayPosition = WeaponSwayObject.transform.position;
@@ -134,6 +146,7 @@ public class WeaponController : MonoBehaviour
     }
     private void CalculateWeaponRotation()
     {
+
         weaponAnimator.speed = 1f;
 
         Vector2 rotationValue = input.onFoot.Look.ReadValue<Vector2>();
@@ -196,6 +209,7 @@ public class WeaponController : MonoBehaviour
                 enemy.TakeDamage(damage);
             }
         }
+
     }
 
     private void CalculateShooting()
@@ -211,23 +225,41 @@ public class WeaponController : MonoBehaviour
                 if (isShooting)
                 {
                     weaponAnimator.SetTrigger("isShooting");
-                    Shoot();
+
 
                     if (currentFireType == weaponFireType.semiAuto)
                     {
+                        Shoot();
                         isShooting = false;
+
+                    }
+                    else if (currentFireType == weaponFireType.FullyAuto && Time.time >= nextTimetoFire)
+                    {
+                        nextTimetoFire = Time.time + 1f / rateOfFire;
+                        Shoot();
                     }
                 }
             }
 
         }
 
-
-
     }
 
-    private void updateWeaponUI()
+    public void updateWeaponUI()
     {
+
+        if (weaponIndex == 0)
+        {
+            weaponNameText.text = "Stengun";
+
+        }
+        else if (weaponIndex == 1)
+        {
+            weaponNameText.text = "M1911";
+
+        }
+        weaponSilhouette.sprite = imageObjs[weaponIndex];
+
         ammoInMagText.text = ammoInMag.ToString();
         ammoTotalText.text = totalAmmo.ToString();
     }
@@ -272,11 +304,8 @@ public class WeaponController : MonoBehaviour
 
                     }
                 }
-
             }
         }
-
-
     }
 
     public void RefillAmmo()
