@@ -20008,15 +20008,17 @@ MonoBehaviour:
   allowedFireTypes: 01000000
   currentFireType: 1
   isShooting: 0
-  damage: 2.5
-  range: 10
+  damage: 4
+  range: 55
   muzzleFlash: {fileID: 548994877}
   isReloading: 0
   reloadTime: 2
-  fullMag: 30
-  ammoInMag: 30
-  totalAmmo: 100
-  fullTotalAmmo: 100
+  fullMag: 32
+  ammoInMag: 32
+  totalAmmo: 128
+  fullTotalAmmo: 128
+  normalAccuracy: 50
+  aimmingAccuracy: 90
   ammoInMagText: {fileID: 2057023269}
   ammoTotalText: {fileID: 2005000462}
   weaponNameText: {fileID: 492044723}
@@ -32271,15 +32273,17 @@ MonoBehaviour:
   allowedFireTypes: 00000000
   currentFireType: 0
   isShooting: 0
-  damage: 10
-  range: 10
+  damage: 4.5
+  range: 40
   muzzleFlash: {fileID: 1831107227}
   isReloading: 0
   reloadTime: 2
-  fullMag: 30
-  ammoInMag: 30
-  totalAmmo: 100
-  fullTotalAmmo: 100
+  fullMag: 7
+  ammoInMag: 7
+  totalAmmo: 42
+  fullTotalAmmo: 42
+  normalAccuracy: 50
+  aimmingAccuracy: 90
   ammoInMagText: {fileID: 2057023269}
   ammoTotalText: {fileID: 2005000462}
   weaponNameText: {fileID: 492044723}

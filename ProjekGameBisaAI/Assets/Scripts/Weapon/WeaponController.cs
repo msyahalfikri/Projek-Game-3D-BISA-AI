@@ -78,6 +78,9 @@ public class WeaponController : MonoBehaviour
     public float fullTotalAmmo = 100;
     int weaponIndex = 0;
 
+    public float normalAccuracy = 50f;
+    public float aimmingAccuracy = 90f;
+
     public TextMeshProUGUI ammoInMagText;
     public TextMeshProUGUI ammoTotalText;
     public TextMeshProUGUI weaponNameText;
@@ -206,7 +209,23 @@ public class WeaponController : MonoBehaviour
             Enemy enemy = hitInfo.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                int randomNum = Random.Range(0, 10);
+
+                if (!isAimingIn)
+                {
+                    if ((normalAccuracy / 10) > randomNum)
+                    {
+                        enemy.TakeDamage(damage);
+                    }
+                }
+                else if (isAimingIn)
+                {
+                    if ((aimmingAccuracy / 10) > randomNum)
+                    {
+                        enemy.TakeDamage(damage);
+                    }
+                }
+
             }
         }
 
