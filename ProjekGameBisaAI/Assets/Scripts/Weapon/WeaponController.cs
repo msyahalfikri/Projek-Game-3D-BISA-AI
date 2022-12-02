@@ -89,7 +89,6 @@ public class WeaponController : MonoBehaviour
     public List<Sprite> imageObjs;
     private void Start()
     {
-        updateWeaponUI();
         newWeaponRotation = transform.localRotation.eulerAngles;
         motor = GetComponentInParent<PlayerMotor>();
         look = GetComponentInParent<PlayerLook>();
@@ -121,7 +120,8 @@ public class WeaponController : MonoBehaviour
         CalculateAimingIn();
         CalculateWeaponSway();
         CalculateShooting();
-        weaponIndex = input.weaponIndex;
+
+        updateWeaponUI();
 
     }
     private void CalculateAimingIn()
@@ -133,7 +133,7 @@ public class WeaponController : MonoBehaviour
             if (isAimingIn)
             {
                 targetPosition = look.cam.transform.position + (WeaponSwayObject.transform.position - sightTarget.position) + (look.cam.transform.forward * sightOffset);
-                motor.speed = 2.5f;
+                motor.speed = 2f;
             }
             else
             {
@@ -200,8 +200,6 @@ public class WeaponController : MonoBehaviour
         var bullet = Instantiate(bulletPrefab, bulletSpawn);
         muzzleFlash.Play();
         ammoInMag--;
-        updateWeaponUI();
-
         Ray ray = new Ray(look.cam.transform.position, look.cam.transform.forward);
         RaycastHit hitInfo;
         if (Physics.Raycast(ray, out hitInfo, range))
@@ -245,7 +243,6 @@ public class WeaponController : MonoBehaviour
                 {
                     weaponAnimator.SetTrigger("isShooting");
 
-
                     if (currentFireType == weaponFireType.semiAuto)
                     {
                         Shoot();
@@ -256,6 +253,7 @@ public class WeaponController : MonoBehaviour
                     {
                         nextTimetoFire = Time.time + 1f / rateOfFire;
                         Shoot();
+
                     }
                 }
             }
@@ -270,14 +268,16 @@ public class WeaponController : MonoBehaviour
         if (weaponIndex == 0)
         {
             weaponNameText.text = "Stengun";
+            weaponSilhouette.sprite = imageObjs[0];
 
         }
         else if (weaponIndex == 1)
         {
             weaponNameText.text = "M1911";
+            weaponSilhouette.sprite = imageObjs[1];
 
         }
-        weaponSilhouette.sprite = imageObjs[weaponIndex];
+
 
         ammoInMagText.text = ammoInMag.ToString();
         ammoTotalText.text = totalAmmo.ToString();
@@ -318,7 +318,7 @@ public class WeaponController : MonoBehaviour
                             }
 
                         }
-                        updateWeaponUI();
+                        // updateWeaponUI();
                         isReloading = false;
 
                     }
@@ -326,11 +326,47 @@ public class WeaponController : MonoBehaviour
             }
         }
     }
+    public void SwitchWeapon(int index)
+    {
+        if (!isReloading)
+        {
+            if (!isAimingIn)
+            {
+                if (!isShooting)
+                {
+                    if (!motor.sprinting)
+                    {
+                        input.currentWeapon = input.weaponHolder[index].GetComponent<WeaponController>();
+
+                        if (index == 0)
+                        {
+                            input.weaponHolder[1].gameObject.SetActive(false);
+                            input.weaponHolder[0].gameObject.SetActive(true);
+
+                            weaponIndex = 0;
+                        }
+                        else if (index == 1)
+                        {
+                            input.weaponHolder[0].gameObject.SetActive(false);
+                            input.weaponHolder[1].gameObject.SetActive(true);
+
+                            weaponIndex = 1;
+
+                        }
+                        updateWeaponUI();
+                        input.WeaponMovementSway(false);
+                    }
+
+                }
+            }
+        }
+
+    }
 
     public void RefillAmmo()
     {
         totalAmmo = fullTotalAmmo;
-        updateWeaponUI();
+        // updateWeaponUI();
     }
 
 }

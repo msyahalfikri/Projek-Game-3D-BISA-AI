@@ -23,7 +23,6 @@ public class PlayerLook : MonoBehaviour
     }
     private void Update()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
     }
 }

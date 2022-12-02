@@ -9,15 +9,16 @@ public class InputManager : MonoBehaviour
     private PlayerInput playerInput;
     public PlayerInput.OnfootActions onFoot;
     public PlayerInput.WeaponActions weaponActions;
+
+    public PlayerInput.MenuActions menu;
     private PlayerMotor motor;
     private PlayerLook look;
     private bool isJumpHeld;
     private CharacterController controller;
     public GameObject[] weaponHolder;
 
-    public bool isSprinting;
-
-
+    public GameObject pauseObj;
+    public PauseMenu pauseScr;
 
     [Header("Weapon")]
     public WeaponController currentWeapon;
@@ -32,10 +33,13 @@ public class InputManager : MonoBehaviour
         playerInput = new PlayerInput();
         onFoot = playerInput.Onfoot;
         weaponActions = playerInput.Weapon;
+        menu = playerInput.Menu;
 
         motor = GetComponent<PlayerMotor>();
 
         look = GetComponent<PlayerLook>();
+
+        pauseScr = pauseObj.GetComponent<PauseMenu>();
 
         controller = GetComponent<CharacterController>();
         onFoot.Crouch.performed += ctx => motor.Crouch();
@@ -53,10 +57,9 @@ public class InputManager : MonoBehaviour
         weaponActions.Fire1Released.performed += ctx => ShootingReleased();
         weaponActions.Reload.performed += ctx => StartCoroutine(currentWeapon.ReloadWeapon());
 
-        weaponActions.SwitchWeaponPrevious.performed += ctx => SwitchWeapon(0);
-        weaponActions.SwitchWeaponNext.performed += ctx => SwitchWeapon(1);
+        weaponActions.SwitchWeaponPrevious.performed += ctx => SwitchingPressed(0);
+        weaponActions.SwitchWeaponNext.performed += ctx => SwitchingPressed(1);
         onFoot.Jump.performed += ctx => motor.Jump();
-
         if (currentWeapon)
         {
             currentWeapon.initialize(this);
@@ -91,14 +94,18 @@ public class InputManager : MonoBehaviour
         }
 
     }
-    // Update is called once per frame
+    private void SwitchingPressed(int index)
+    {
+        currentWeapon.SwitchWeapon(index);
+    }
+
     private void Update()
     {
-        isSprinting = motor.sprinting;
         if (currentWeapon)
         {
             currentWeapon.initialize(this);
         }
+
     }
     void FixedUpdate()
     {
@@ -107,45 +114,6 @@ public class InputManager : MonoBehaviour
 
     }
 
-    public void SwitchWeapon(int index)
-    {
-        if (!currentWeapon.isReloading)
-        {
-            if (!currentWeapon.isAimingIn)
-            {
-                if (!currentWeapon.isShooting)
-                {
-                    if (!isSprinting)
-                    {
-                        currentWeapon = weaponHolder[index].GetComponent<WeaponController>();
-
-
-                        if (index == 0)
-                        {
-                            weaponHolder[0].gameObject.SetActive(true);
-                            weaponHolder[1].gameObject.SetActive(false);
-                            weaponIndex = 0;
-                        }
-                        else if (index == 1)
-                        {
-                            weaponHolder[1].gameObject.SetActive(true);
-                            weaponHolder[0].gameObject.SetActive(false);
-                            weaponIndex = 1;
-                        }
-                        currentWeapon.updateWeaponUI();
-
-                    }
-
-
-                }
-            }
-        }
-
-
-
-
-
-    }
     private void LateUpdate()
     {
         look.ProcessLook(onFoot.Look.ReadValue<Vector2>());
@@ -154,12 +122,13 @@ public class InputManager : MonoBehaviour
     {
         onFoot.Enable();
         weaponActions.Enable();
-
+        menu.Enable();
     }
 
     private void OnDisable()
     {
         onFoot.Disable();
         weaponActions.Disable();
+        menu.Disable();
     }
 }

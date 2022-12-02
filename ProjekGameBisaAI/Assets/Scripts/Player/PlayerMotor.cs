@@ -31,6 +31,9 @@ public class PlayerMotor : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         input = GetComponent<InputManager>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -104,7 +107,7 @@ public class PlayerMotor : MonoBehaviour
 
             if (sprinting)
             {
-                speed = 8;
+                speed = 9;
             }
             else
             {

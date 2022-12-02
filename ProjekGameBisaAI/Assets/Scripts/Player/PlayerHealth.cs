@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
-
-    private float health;
+    [Header("References")]
+    public float health;
     private float lerpTimer;
     [Header("Health bar")]
     public float maxHealth = 100f;
@@ -42,6 +42,7 @@ public class PlayerHealth : MonoBehaviour
                 overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
             }
         }
+        Debug.Log(RespawnPlayer.isDead);
 
     }
     public void UpdateHealthUI()
@@ -74,11 +75,24 @@ public class PlayerHealth : MonoBehaviour
         lerpTimer = 0f;
         durationTimer = 0;
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 1);
+
+        if (health <= 0)
+        {
+            Dead();
+        }
     }
     public void RestoreHealth(float healAmount)
     {
         health += healAmount;
         lerpTimer = 0f;
 
+    }
+
+    public void Dead()
+    {
+        if (health <= 0)
+        {
+            RespawnPlayer.isDead = true;
+        }
     }
 }
