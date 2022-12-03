@@ -14,17 +14,16 @@ public class RespawnPlayer : MonoBehaviour
     }
     private void Update()
     {
-        Respawn();
+        // Respawn();
     }
     public void Respawn()
     {
-        if (isDead)
-        {
-            player.SetActive(false);
-            player.transform.position = respawnPoint.transform.position;
-            player.SetActive(true);
-            isDead = false;
-        }
-
+        // if (isDead)
+        // {
+        player.SetActive(false);
+        player.transform.position = respawnPoint.transform.position;
+        player.SetActive(true);
+        isDead = false;
+        // }
     }
 }

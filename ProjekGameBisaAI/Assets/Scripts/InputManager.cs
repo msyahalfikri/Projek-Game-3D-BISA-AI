@@ -17,14 +17,16 @@ public class InputManager : MonoBehaviour
     private CharacterController controller;
     public GameObject[] weaponHolder;
 
-    public GameObject pauseObj;
-    public PauseMenu pauseScr;
+    // public GameObject pauseObj;
+    // public PauseMenu pauseScr;
 
     [Header("Weapon")]
     public WeaponController currentWeapon;
     public float weaponAnimationSpeed;
 
-    public int weaponIndex = 0;
+    public int weaponIndex;
+
+
 
     void Awake()
     {
@@ -39,7 +41,7 @@ public class InputManager : MonoBehaviour
 
         look = GetComponent<PlayerLook>();
 
-        pauseScr = pauseObj.GetComponent<PauseMenu>();
+        // pauseScr = pauseObj.GetComponent<PauseMenu>();
 
         controller = GetComponent<CharacterController>();
         onFoot.Crouch.performed += ctx => motor.Crouch();
@@ -60,6 +62,7 @@ public class InputManager : MonoBehaviour
         weaponActions.SwitchWeaponPrevious.performed += ctx => SwitchingPressed(0);
         weaponActions.SwitchWeaponNext.performed += ctx => SwitchingPressed(1);
         onFoot.Jump.performed += ctx => motor.Jump();
+
         if (currentWeapon)
         {
             currentWeapon.initialize(this);
@@ -97,6 +100,7 @@ public class InputManager : MonoBehaviour
     private void SwitchingPressed(int index)
     {
         currentWeapon.SwitchWeapon(index);
+        weaponIndex = index;
     }
 
     private void Update()

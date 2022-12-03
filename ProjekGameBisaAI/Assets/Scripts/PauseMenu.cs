@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PauseMenu : MonoBehaviour
 {
-    private bool gameIspaused;
+    public static bool gameIspaused;
     private InputAction menu;
     public GameObject pauseMenuUI;
     private PlayerInput playerInput;
@@ -17,11 +17,11 @@ public class PauseMenu : MonoBehaviour
     {
 
     }
-    public void Resume()
-    {
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-    }
+    // public void Resume()
+    // {
+    //     pauseMenuUI.SetActive(false);
+    //     Time.timeScale = 1f;
+    // }
     void Pause(InputAction.CallbackContext context)
     {
         gameIspaused = !gameIspaused;
@@ -38,24 +38,17 @@ public class PauseMenu : MonoBehaviour
 
     void ActivateMenu()
     {
-        Time.timeScale = 0;
-        AudioListener.pause = true;
-        pauseMenuUI.SetActive(true);
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        GamePaused();
+        pauseMenuUI.SetActive(true);
     }
 
 
     public void DeactivateMenu()
     {
-        Time.timeScale = 1;
-        AudioListener.pause = false;
+        GameStart();
         pauseMenuUI.SetActive(false);
         gameIspaused = false;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void OnEnable()
@@ -71,4 +64,15 @@ public class PauseMenu : MonoBehaviour
         menu.Disable();
     }
 
+    public static void GamePaused()
+    {
+        Time.timeScale = 0;
+        AudioListener.pause = true;
+    }
+
+    public static void GameStart()
+    {
+        Time.timeScale = 1;
+        AudioListener.pause = false;
+    }
 }

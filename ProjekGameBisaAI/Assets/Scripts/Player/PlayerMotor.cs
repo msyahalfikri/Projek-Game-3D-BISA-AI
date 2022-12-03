@@ -8,6 +8,8 @@ public class PlayerMotor : MonoBehaviour
     private CharacterController controller;
 
     private InputManager input;
+    private PlayerSound playerSound;
+
     [SerializeField]
     public Vector3 playerVelocity;
     public float speed = 5f;
@@ -31,9 +33,7 @@ public class PlayerMotor : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         input = GetComponent<InputManager>();
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        playerSound = GetComponent<PlayerSound>();
     }
 
     // Update is called once per frame
@@ -58,8 +58,6 @@ public class PlayerMotor : MonoBehaviour
             crouchTimer = 0f;
         }
         CalculateAimingIn();
-
-
     }
     //Menerima input dari inputmanager.cs
     public void processMove(Vector2 input)
@@ -74,6 +72,7 @@ public class PlayerMotor : MonoBehaviour
             playerVelocity.y = -2f;
         }
         controller.Move(playerVelocity * Time.deltaTime);
+        // playerSound.PlayWalkingSound();
     }
 
     private void CalculateAimingIn()
@@ -92,6 +91,12 @@ public class PlayerMotor : MonoBehaviour
         {
             playerVelocity.y = Mathf.Sqrt(jumpHeight * -3.0f * gravity);
         }
+        int rand = Random.Range(0, 10);
+        if (rand <= 4)
+        {
+            playerSound.PlayJumpSound();
+        }
+
     }
     public void Crouch()
     {

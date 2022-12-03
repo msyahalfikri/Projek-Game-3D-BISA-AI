@@ -28,14 +28,10 @@ public class WeaponController : MonoBehaviour
 
     Vector3 newWeaponRotation;
     Vector3 newWeaponRotationVelocity;
-
     Vector3 targetWeaponRotation;
     Vector3 targetWeaponRotationVelocity;
-
-
     Vector3 newWeaponMovementRotation;
     Vector3 newWeaponMovementRotationVelocity;
-
     Vector3 targetWeaponMovementRotation;
     Vector3 targetWeaponMovementRotationVelocity;
 
@@ -58,6 +54,7 @@ public class WeaponController : MonoBehaviour
     [HideInInspector]
     public bool isAimingIn;
 
+
     [Header("Shooting")]
     public float rateOfFire = 15f;
     private float currentFireRate;
@@ -70,23 +67,29 @@ public class WeaponController : MonoBehaviour
     public float range = 100f;
     public ParticleSystem muzzleFlash;
 
+    [Header("Reloading")]
     public bool isReloading = false;
     public float reloadTime = 3f;
     public float fullMag = 30f;
     public float ammoInMag = 30;
     public float totalAmmo = 100;
     public float fullTotalAmmo = 100;
-    int weaponIndex = 0;
+    private int weaponIndex = 1;
 
+    [Header("Accuracy")]
     public float normalAccuracy = 50f;
     public float aimmingAccuracy = 90f;
 
+    [Header("Weapon UI")]
     public TextMeshProUGUI ammoInMagText;
     public TextMeshProUGUI ammoTotalText;
     public TextMeshProUGUI weaponNameText;
-
     public Image weaponSilhouette;
     public List<Sprite> imageObjs;
+
+    [Header("Weapon Sound")]
+    public AudioSource source;
+    public AudioClip reloadingSound;
     private void Start()
     {
         newWeaponRotation = transform.localRotation.eulerAngles;
@@ -120,9 +123,9 @@ public class WeaponController : MonoBehaviour
         CalculateAimingIn();
         CalculateWeaponSway();
         CalculateShooting();
-
         updateWeaponUI();
-
+        weaponIndex = input.weaponIndex;
+        Debug.Log(weaponIndex);
     }
     private void CalculateAimingIn()
     {
@@ -223,7 +226,6 @@ public class WeaponController : MonoBehaviour
                         enemy.TakeDamage(damage);
                     }
                 }
-
             }
         }
 
@@ -264,7 +266,6 @@ public class WeaponController : MonoBehaviour
 
     public void updateWeaponUI()
     {
-
         if (weaponIndex == 0)
         {
             weaponNameText.text = "Stengun";
@@ -277,7 +278,6 @@ public class WeaponController : MonoBehaviour
             weaponSilhouette.sprite = imageObjs[1];
 
         }
-
 
         ammoInMagText.text = ammoInMag.ToString();
         ammoTotalText.text = totalAmmo.ToString();
@@ -295,6 +295,7 @@ public class WeaponController : MonoBehaviour
                     {
                         isReloading = true;
                         weaponAnimator.SetTrigger("isReloading");
+                        source.PlayOneShot(reloadingSound);
                         yield return new WaitForSeconds(reloadTime);
                         if (totalAmmo >= fullMag)
                         {
@@ -342,16 +343,11 @@ public class WeaponController : MonoBehaviour
                         {
                             input.weaponHolder[1].gameObject.SetActive(false);
                             input.weaponHolder[0].gameObject.SetActive(true);
-
-                            weaponIndex = 0;
                         }
                         else if (index == 1)
                         {
                             input.weaponHolder[0].gameObject.SetActive(false);
                             input.weaponHolder[1].gameObject.SetActive(true);
-
-                            weaponIndex = 1;
-
                         }
                         updateWeaponUI();
                         input.WeaponMovementSway(false);
@@ -360,13 +356,11 @@ public class WeaponController : MonoBehaviour
                 }
             }
         }
-
     }
 
     public void RefillAmmo()
     {
-        totalAmmo = fullTotalAmmo;
-        // updateWeaponUI();
+        this.totalAmmo = fullTotalAmmo;
     }
 
 }

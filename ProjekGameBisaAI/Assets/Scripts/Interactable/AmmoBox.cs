@@ -9,7 +9,7 @@ public class AmmoBox : Interactable
     // Start is called before the first frame update
     void Start()
     {
-        weaponController = GetComponent<WeaponController>();
+
     }
 
     // Update is called once per frame
@@ -20,6 +20,6 @@ public class AmmoBox : Interactable
 
     protected override void Interact()
     {
-        weaponController.totalAmmo += ammoInBox;
+
     }
 }

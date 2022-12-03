@@ -6,6 +6,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [Header("References")]
     public float health;
+    private PlayerSound playerSound;
     private float lerpTimer;
     [Header("Health bar")]
     public float maxHealth = 100f;
@@ -19,8 +20,11 @@ public class PlayerHealth : MonoBehaviour
     public float fadeSpeed;
     private float durationTimer;
     // Start is called before the first frame update
+
+
     void Start()
     {
+        playerSound = GetComponent<PlayerSound>();
         health = maxHealth;
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
     }
@@ -42,7 +46,6 @@ public class PlayerHealth : MonoBehaviour
                 overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
             }
         }
-        Debug.Log(RespawnPlayer.isDead);
 
     }
     public void UpdateHealthUI()
@@ -71,7 +74,9 @@ public class PlayerHealth : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+
         health -= damage;
+        playerSound.PlayHurtSound();
         lerpTimer = 0f;
         durationTimer = 0;
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 1);
@@ -90,9 +95,11 @@ public class PlayerHealth : MonoBehaviour
 
     public void Dead()
     {
-        if (health <= 0)
-        {
-            RespawnPlayer.isDead = true;
-        }
+        RespawnPlayer.isDead = true;
+    }
+
+    public void RestoreFullHealth()
+    {
+        health = maxHealth;
     }
 }
