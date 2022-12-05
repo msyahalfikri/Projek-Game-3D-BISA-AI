@@ -19,7 +19,7 @@ public class TitleMenu : MonoBehaviour
     {
         StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex + 1));
     }
-    // Update is called once per frame
+
     private void Start()
     {
 
@@ -28,7 +28,6 @@ public class TitleMenu : MonoBehaviour
     {
         LoadLevel();
     }
-
 
     public void QuitGame()
     {

@@ -8,6 +8,9 @@ public class LevelLoader : MonoBehaviour
 
     public Animator transition;
     public float transitionTime;
+    private PauseMenu pauseMenu;
+
+    public GameObject pauseMenuObj;
     IEnumerator LevelLoaderFunc(int levelIndex)
     {
         transition.SetTrigger("Start");
@@ -19,5 +22,13 @@ public class LevelLoader : MonoBehaviour
     {
         StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex + 1));
     }
-    // Update is called once per frame
+
+
+    public void UnloadLevel()
+    {
+        pauseMenu = pauseMenuObj.GetComponent<PauseMenu>();
+        pauseMenu.DeactivateMenu();
+        StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex - 1));
+        PlayerUI.LockPointer(false);
+    }
 }
