@@ -18,6 +18,10 @@ public class LevelLoader : MonoBehaviour
         SceneManager.LoadScene(levelIndex);
     }
 
+    private void Awake()
+    {
+        PlayerUI.LockPointer(false);
+    }
     public void LoadLevel()
     {
         StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex + 1));
@@ -29,6 +33,6 @@ public class LevelLoader : MonoBehaviour
         pauseMenu = pauseMenuObj.GetComponent<PauseMenu>();
         pauseMenu.DeactivateMenu();
         StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex - 1));
-        PlayerUI.LockPointer(false);
+
     }
 }
