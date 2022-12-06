@@ -67,6 +67,8 @@ public class WeaponController : MonoBehaviour
     public float range = 100f;
     public ParticleSystem muzzleFlash;
 
+    public float impatForce = 30f;
+
     [Header("Reloading")]
     public bool isReloading = false;
     public float reloadTime = 3f;
@@ -226,6 +228,12 @@ public class WeaponController : MonoBehaviour
                         enemy.TakeDamage(damage);
                     }
                 }
+            }
+
+            if (hitInfo.rigidbody != null)
+            {
+                hitInfo.rigidbody.AddForce(-hitInfo.normal * impatForce);
+
             }
         }
 

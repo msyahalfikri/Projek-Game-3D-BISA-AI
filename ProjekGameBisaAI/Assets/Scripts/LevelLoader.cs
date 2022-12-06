@@ -28,10 +28,15 @@ public class LevelLoader : MonoBehaviour
     }
 
 
-    public void UnloadLevel()
+    public void UnloadLevelIngame()
     {
         pauseMenu = pauseMenuObj.GetComponent<PauseMenu>();
         pauseMenu.DeactivateMenu();
+        StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex - 1));
+
+    }
+    public void UnloadLevel()
+    {
         StartCoroutine(LevelLoaderFunc(SceneManager.GetActiveScene().buildIndex - 1));
 
     }
