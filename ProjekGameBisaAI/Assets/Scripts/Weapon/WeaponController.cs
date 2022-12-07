@@ -218,14 +218,14 @@ public class WeaponController : MonoBehaviour
                 {
                     if ((normalAccuracy / 10) > randomNum)
                     {
-                        enemy.TakeDamage(damage);
+                        enemy.TakeDamage(damage, ray.direction);
                     }
                 }
                 else if (isAimingIn)
                 {
                     if ((aimmingAccuracy / 10) > randomNum)
                     {
-                        enemy.TakeDamage(damage);
+                        enemy.TakeDamage(damage, ray.direction);
                     }
                 }
             }
@@ -234,6 +234,11 @@ public class WeaponController : MonoBehaviour
             {
                 hitInfo.rigidbody.AddForce(-hitInfo.normal * impatForce);
 
+            }
+            var Hitbox = hitInfo.collider.GetComponent<Hitbox>();
+            if (Hitbox)
+            {
+                Hitbox.OnRayCastHit(this, ray.direction);
             }
         }
 

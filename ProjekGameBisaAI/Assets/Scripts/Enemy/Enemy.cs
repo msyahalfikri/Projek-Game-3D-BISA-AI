@@ -14,24 +14,35 @@ public class Enemy : MonoBehaviour
     public Image bgHealthBar;
     public Image frontHealthBar;
     public Image backHealthBar;
+    AIAgent agent;
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, Vector3 direction)
     {
         enemyHealth -= amount;
         lerpTimer = 0f;
         if (enemyHealth <= 0f)
         {
-            Die();
+            Die(direction);
         }
     }
 
-    private void Die()
+    private void Die(Vector3 direction)
     {
-        Destroy(gameObject);
+        AIDeathState deathState = agent.stateMachine.GetState(AiStateID.Death) as AIDeathState;
+        deathState.direction = direction;
+        agent.stateMachine.ChangeState(AiStateID.Death);
     }
     private void Start()
     {
         enemyHealth = enemyMaxHealth;
+        agent = GetComponent<AIAgent>();
+
+        var rigidbodies = GetComponentsInChildren<Rigidbody>();
+        foreach (var rigidBody in rigidbodies)
+        {
+            Hitbox hitbox = rigidBody.gameObject.AddComponent<Hitbox>();
+            hitbox.enemy = this;
+        }
     }
     private void Update()
     {

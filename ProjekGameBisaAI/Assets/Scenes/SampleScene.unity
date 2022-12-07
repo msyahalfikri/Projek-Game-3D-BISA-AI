@@ -237,6 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec173d038966c6c4d82c2d47d305f0da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerVelocity: {x: 0, y: 0, z: 0}
   speed: 3
   gravity: -17
   jumpHeight: 1
@@ -244,6 +245,10 @@ MonoBehaviour:
   sprinting: 0
   crouchTimer: 0
   lerpCrouch: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  isAimingIn: 0
 --- !u!114 &262650829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +261,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a53207b790b72e41a0febd7a536c04d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponHolder: []
+  currentWeapon: {fileID: 0}
+  weaponAnimationSpeed: 0
+  weaponIndex: 0
 --- !u!114 &262650830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,6 +309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   promptText: {fileID: 476107871}
+  DeathScreenUI: {fileID: 0}
 --- !u!1 &373582845
 GameObject:
   m_ObjectHideFlags: 0
@@ -1153,6 +1163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 824bf453766a86741a9b268f6f1efaf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useEvents: 0
   promptMessage: Gunakan keypad
   door: {fileID: 1110186396}
 --- !u!135 &843666986
