@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class AIChasePlayerState : AIState
 {
-
     float timer = 0f;
     public AiStateID GetID()
     {
@@ -14,9 +13,15 @@ public class AIChasePlayerState : AIState
     public void Enter(AIAgent agent)
     {
 
+
     }
     public void Update(AIAgent agent)
     {
+        agent.weapon.EquipWeapon();
+        if (agent.weapon.HasWeapon())
+        {
+            agent.stateMachine.ChangeState(AiStateID.AttackPlayer);
+        }
         if (!agent.enabled)
         {
             return;
@@ -38,11 +43,6 @@ public class AIChasePlayerState : AIState
                     agent.navMeshAgent.destination = agent.playerTransform.position;
                 }
             }
-            // float sqDistance = (playerTransform.position - agent.destination).sqrMagnitude;
-            // if (sqDistance > maxDistance * maxDistance)
-            // {
-
-            // }
             timer = agent.config.maxTime;
         }
     }

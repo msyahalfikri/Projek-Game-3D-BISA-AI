@@ -69,6 +69,8 @@ public class WeaponController : MonoBehaviour
 
     public float impatForce = 30f;
 
+    public Transform raycastOrigin;
+
     [Header("Reloading")]
     public bool isReloading = false;
     public float reloadTime = 3f;
