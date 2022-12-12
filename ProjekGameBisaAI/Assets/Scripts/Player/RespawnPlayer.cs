@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RespawnPlayer : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private Transform respawnPoint;
+    private PlayerUI playerUI;
     public static bool isDead = false;
 
     private void Start()
     {
-
+        playerUI = GetComponent<PlayerUI>();
     }
     private void Update()
     {
@@ -18,12 +20,11 @@ public class RespawnPlayer : MonoBehaviour
     }
     public void Respawn()
     {
-        // if (isDead)
-        // {
-        player.SetActive(false);
-        player.transform.position = respawnPoint.transform.position;
-        player.SetActive(true);
+
+        // player.SetActive(false);
+        // player.transform.position = respawnPoint.transform.position;
+        // player.SetActive(true);  
         isDead = false;
-        // }
+        SceneManager.LoadScene(1);
     }
 }

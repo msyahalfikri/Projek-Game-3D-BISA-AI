@@ -74,7 +74,6 @@ public class PlayerHealth : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-
         health -= damage;
         playerSound.PlayHurtSound();
         lerpTimer = 0f;
@@ -90,7 +89,6 @@ public class PlayerHealth : MonoBehaviour
     {
         health += healAmount;
         lerpTimer = 0f;
-
     }
 
     public void Dead()

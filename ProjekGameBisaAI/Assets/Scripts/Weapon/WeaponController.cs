@@ -16,7 +16,6 @@ public class WeaponController : MonoBehaviour
     public Transform bulletSpawn;
     private InputManager input;
     private PlayerMotor motor;
-
     private PlayerInteract playerInteract;
 
     [Header("Settings")]
@@ -129,7 +128,6 @@ public class WeaponController : MonoBehaviour
         CalculateShooting();
         updateWeaponUI();
         weaponIndex = input.weaponIndex;
-        Debug.Log(weaponIndex);
     }
     private void CalculateAimingIn()
     {
@@ -278,6 +276,48 @@ public class WeaponController : MonoBehaviour
         }
 
     }
+
+    public void EnemyShoot(int innaccuracy, GameObject player, float rayCastDisctance)
+    {
+        PlayerHealth playerHealth = player.gameObject.GetComponent<PlayerHealth>();
+        var bullet = Instantiate(bulletPrefab, bulletSpawn);
+        muzzleFlash.Play();
+
+        // GameObject raycastOrigin = GameObject.Find("RayCast");
+        // Ray ray = new Ray(raycastOrigin.transform.position, player.transform.localPosition * 50);
+        // RaycastHit hitInfo;
+        // Debug.DrawRay(ray.origin, ray.direction * rayCastDisctance);
+        // if (Physics.Raycast(ray, out hitInfo, rayCastDisctance))
+        // {
+        //     if (hitInfo.collider.GetComponent<PlayerHealth>() != null)
+        //     {
+        int randomNum = Random.Range(0, 10);
+        if ((innaccuracy / 10) > randomNum)
+        {
+            playerHealth.TakeDamage(3);
+        }
+        //     }
+        // }
+    }
+
+    public void EnemyStopShoot()
+    {
+        isShooting = false;
+    }
+
+    public void EnemyCalculateShooting(int innaccuracy, GameObject player, float rayCastDisctance)
+    {
+        if (isShooting)
+        {
+            if (Time.time >= nextTimetoFire)
+            {
+                nextTimetoFire = Time.time + 1f / 5;
+                weaponAnimator.SetTrigger("isShooting");
+                EnemyShoot(innaccuracy, player, rayCastDisctance);
+            }
+        }
+    }
+
 
     public void updateWeaponUI()
     {

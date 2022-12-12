@@ -51,14 +51,19 @@ public class PlayerSound : MonoBehaviour
 
     public void PlayHurtSound()
     {
-        if (!source.isPlaying)
+        int rand = Random.Range(0, 10);
+        if (3 > rand)
         {
-            source.PlayOneShot(hurtSound);
+            if (!source.isPlaying)
+            {
+                source.PlayOneShot(hurtSound);
+            }
+            else
+            {
+                source.Stop();
+                source.PlayOneShot(hurtSound);
+            }
         }
-        else
-        {
-            source.Stop();
-            source.PlayOneShot(hurtSound);
-        }
+
     }
 }

@@ -13,18 +13,13 @@ public class AIChasePlayerState : AIState
     public void Enter(AIAgent agent)
     {
 
-
+        agent.weapon.EquipWeapon();
     }
     public void Update(AIAgent agent)
     {
-        agent.weapon.EquipWeapon();
-        if (agent.weapon.HasWeapon())
+        if (agent.weapon.HasWeapon() && agent.sensor.IsInSight(agent.playerTransform.gameObject))
         {
             agent.stateMachine.ChangeState(AiStateID.AttackPlayer);
-        }
-        if (!agent.enabled)
-        {
-            return;
         }
         timer -= Time.deltaTime;
         if (!agent.navMeshAgent.hasPath)
@@ -45,6 +40,12 @@ public class AIChasePlayerState : AIState
             }
             timer = agent.config.maxTime;
         }
+
+        if (!agent.enabled)
+        {
+            return;
+        }
+
     }
     public void Exit(AIAgent agent)
     {

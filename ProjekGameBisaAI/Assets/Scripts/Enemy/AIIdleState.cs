@@ -8,6 +8,7 @@ public class AIIdleState : AIState
     {
         return AiStateID.Idle;
     }
+
     public void Enter(AIAgent agent)
     {
 
@@ -27,6 +28,15 @@ public class AIIdleState : AIState
         {
             agent.stateMachine.ChangeState(AiStateID.ChasePlayer);
         }
+
+        // if (!agent.navMeshAgent.hasPath)
+        // {
+        //     agent.stateMachine.ChangeState(AiStateID.Patroling);
+        // }
+        // else
+        // {
+        //     agent.stateMachine.ChangeState(AiStateID.Idle);
+        // }
     }
     public void Exit(AIAgent agent)
     {

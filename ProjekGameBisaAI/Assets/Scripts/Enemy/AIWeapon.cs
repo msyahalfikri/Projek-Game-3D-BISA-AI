@@ -11,7 +11,27 @@ public class AIWeapon : MonoBehaviour
     MeshSockets sockets;
     WeaponIK weaponIK;
     Transform currentTarget;
+    bool weaponActive = false;
+    public int innaccuracy = 10;
 
+
+    private void Update()
+    {
+
+    }
+    public void SetFiring(bool enabled, GameObject player, float rayCastDisctance)
+    {
+        if (enabled && weaponActive)
+        {
+            currentWeapon.isShooting = true;
+            currentWeapon.EnemyCalculateShooting(innaccuracy, player, rayCastDisctance);
+        }
+        else
+        {
+            currentWeapon.EnemyStopShoot();
+            currentWeapon.EnemyCalculateShooting(innaccuracy, player, rayCastDisctance);
+        }
+    }
     public void EquipWeapon()
     {
         WeaponController enemyWeapon = Instantiate(weaponFab);
@@ -41,6 +61,7 @@ public class AIWeapon : MonoBehaviour
         }
 
         weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
+        weaponActive = true;
     }
     public void DropWeapon()
     {
