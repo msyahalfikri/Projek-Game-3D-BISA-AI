@@ -9,6 +9,7 @@ public class PlayerUI : MonoBehaviour
     private TextMeshProUGUI promptText;
 
     public GameObject DeathScreenUI;
+    public GameObject WinScreenUI;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +17,8 @@ public class PlayerUI : MonoBehaviour
     private void Update()
     {
         showDeathScreen();
-        if (PauseMenu.gameIspaused || RespawnPlayer.isDead)
+        showWinScreen();
+        if (PauseMenu.gameIspaused || RespawnPlayer.isDead || DemoGameplayWin.isWin)
         {
             PauseMenu.GamePaused();
             LockPointer(false);
@@ -56,6 +58,18 @@ public class PlayerUI : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+    }
+
+    public void showWinScreen()
+    {
+        if (DemoGameplayWin.isWin)
+        {
+            WinScreenUI.SetActive(true);
+        }
+        else
+        {
+            WinScreenUI.SetActive(false);
         }
     }
 

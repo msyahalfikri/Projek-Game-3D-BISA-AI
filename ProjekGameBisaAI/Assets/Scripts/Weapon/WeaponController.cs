@@ -294,7 +294,7 @@ public class WeaponController : MonoBehaviour
         int randomNum = Random.Range(0, 10);
         if ((innaccuracy / 10) > randomNum)
         {
-            playerHealth.TakeDamage(3);
+            playerHealth.TakeDamage(1);
         }
         //     }
         // }

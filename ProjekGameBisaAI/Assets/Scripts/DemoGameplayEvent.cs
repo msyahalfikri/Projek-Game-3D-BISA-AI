@@ -11,4 +11,6 @@ public class DemoGameplayEvent : MonoBehaviour
     {
         objectiveText.color = Color.grey;
     }
+
+
 }

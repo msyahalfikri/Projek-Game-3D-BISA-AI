@@ -25,6 +25,7 @@ public class RespawnPlayer : MonoBehaviour
         // player.transform.position = respawnPoint.transform.position;
         // player.SetActive(true);  
         isDead = false;
+        DemoGameplayWin.isWin = false;
         SceneManager.LoadScene(1);
     }
 }
